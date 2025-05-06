@@ -1,0 +1,1 @@
+export const EXCHANGE_RATE_BASE_URL = 'https://v6.exchangerate-api.com/v6';

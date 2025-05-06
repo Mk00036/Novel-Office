@@ -1,4 +1,3 @@
-// utils/calculateEMI.js
 export const calculateEMI = (P, annualRate, termYears) => {
     const N = termYears * 12;
     const R = annualRate / 12 / 100;

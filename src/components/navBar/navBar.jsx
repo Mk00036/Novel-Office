@@ -17,8 +17,8 @@ import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 const navItems = [
   { label: "Home", path: "/" },
+  { label: "Exchange Rates (LIVE)", path: "/exchange-rates" },
   { label: "Error", path: "/error" },
-  { label: "Workflow Automation", path: "/*" },
 ];
 
 const NavBar = (props) => {
