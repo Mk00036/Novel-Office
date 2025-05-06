@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/navBar/navBar";
 import Home from "./pages/home/home";
-import ExchangeRates from "./pages/exchangeRates/exchangeRates";
+import ExchangeRates from "../src/pages/exchangeRates/ExchangeRates"
 import ThemeContextProvider from "./context/theme/ThemeContextProvider";
 import ErrorPage from "./pages/errorPage/ErrorPage";
 
