@@ -12,16 +12,11 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import { useEffect } from "react";
-
-// Sample currency data (replacing the original rows)
-
-// Convert the rates object to an array of objects for mapping
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,11 +55,7 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
   return (
-    <TableHead
-      sx={{
-        mb: 1, // margin-bottom between rows
-      }}
-    >
+    <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
@@ -97,7 +88,7 @@ EnhancedTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
+function EnhancedTableToolbar() {
   return (
     <Toolbar
       sx={{
@@ -122,6 +113,7 @@ export default function EnhancedTable({ rates = {}, loading, error }) {
   useEffect(() => {
     handleRequestSort({ type: "sort" }, "rate");
   }, [rates]);
+
   const rows = rates
     ? Object.keys(rates).map((currency) => ({
         code: currency,
@@ -134,7 +126,7 @@ export default function EnhancedTable({ rates = {}, loading, error }) {
       [...rows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, rows]
   );
 
   const emptyRows =
@@ -159,6 +151,30 @@ export default function EnhancedTable({ rates = {}, loading, error }) {
     setDense(event.target.checked);
   };
 
+  // ✅ Loading state
+  if (loading) {
+    return (
+      <Box sx={{ width: "100%", textAlign: "center", mt: 5 }}>
+        <CircularProgress />
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          Loading exchange rates...
+        </Typography>
+      </Box>
+    );
+  }
+
+  // ❌ Error state
+  if (error) {
+    return (
+      <Box sx={{ width: "100%", textAlign: "center", mt: 5 }}>
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
+      </Box>
+    );
+  }
+
+  // ✅ Table render
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -175,13 +191,9 @@ export default function EnhancedTable({ rates = {}, loading, error }) {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {visibleRows.map((row, index) => (
-                <TableRow
-                  hover
-                  tabIndex={-1}
-                  key={row.code}
-                >
-                  <TableCell component="th" scope="row" >
+              {visibleRows.map((row) => (
+                <TableRow hover tabIndex={-1} key={row.code}>
+                  <TableCell component="th" scope="row">
                     {row.code}
                   </TableCell>
                   <TableCell align="right">{row.rate}</TableCell>
