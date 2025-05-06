@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { calculateEMI } from "../../utils/calculateEMI";
 import EmiScheduleTable from "../../components/table/EmiScheduleTable";
-import { useCurrency } from "../../context/CurrencyContext";
 
 const Home = () => {
   const [loanAmount, setLoanAmount] = useState("");
@@ -45,13 +44,10 @@ const Home = () => {
         parseFloat(interestRate),
         parseFloat(termYears)
       );
-      console.log("Monthly EMI:", monthlyEMI);
-      console.log("Schedule:", schedule);
       setEmiResult({ monthlyEMI, schedule });
     }
   };
 
-  // Reset function to clear form and EMI result
   const handleReset = () => {
     setLoanAmount("");
     setInterestRate("");
@@ -70,8 +66,9 @@ const Home = () => {
         alignItems: "center",
         justifyContent: "center",
         p: 2,
-        backgroundColor: "#f0f0f0",
-        mt: 4, // Margin top to separate from navbar
+        backgroundColor: theme.palette.background.default,
+        mt: 4,
+        color: theme.palette.text.primary,
       }}
     >
       {/* Form Container */}
@@ -79,15 +76,15 @@ const Home = () => {
         sx={{
           width: "100%",
           maxWidth: "100%",
-          backgroundColor: "#fff",
+          backgroundColor: theme.palette.background.paper,
           borderRadius: 2,
           boxShadow: 3,
           p: { xs: 3, md: 6 },
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          minHeight: "300px", // Fixed height for form container
-          mb: 4, // Margin bottom to separate from table
+          minHeight: "300px",
+          mb: 4,
         }}
       >
         <Typography
@@ -152,11 +149,12 @@ const Home = () => {
         sx={{
           width: "100%",
           maxWidth: "100%",
-          backgroundColor: "#fff",
+          backgroundColor: theme.palette.background.paper,
           borderRadius: 2,
           boxShadow: 3,
           p: { xs: 3, md: 6 },
-          mt: 4, // Adds top margin for spacing from form
+          mt: 4,
+          color: theme.palette.text.primary,
         }}
       >
         {emiResult ? (
@@ -166,7 +164,7 @@ const Home = () => {
             </Typography>
 
             <EmiScheduleTable schedule={emiResult.schedule} />
-            {/* Reset Button */}
+
             <Box sx={{ mt: 2, textAlign: "center" }}>
               <Button
                 variant="outlined"
@@ -179,7 +177,7 @@ const Home = () => {
             </Box>
           </>
         ) : (
-          <Typography variant="body1" textAlign="center" color="textSecondary">
+          <Typography variant="body1" textAlign="center" color="text.secondary">
             Please fill in the form and calculate the EMI.
           </Typography>
         )}

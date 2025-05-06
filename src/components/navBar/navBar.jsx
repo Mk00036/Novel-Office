@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,7 +12,10 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
+import Switch from "@mui/material/Switch";
 import { useNavigate } from "react-router-dom";
+import { useThemeToggle } from "../../context/theme/ThemeContextProvider";
+import { useTheme } from "@mui/material/styles";
 
 const drawerWidth = 240;
 const navItems = [
@@ -25,6 +28,8 @@ const NavBar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navigate = useNavigate();
+  const { mode, toggleTheme } = useThemeToggle();
+  const theme = useTheme();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -42,7 +47,7 @@ const NavBar = (props) => {
           src="https://noveloffice.in/wp-content/uploads/2023/08/novel-office-logo.webp"
           alt="Novel Logo"
           title="Novel Office"
-          style={{ maxWidth: '200px', height: 'auto' }}
+          style={{ maxWidth: "200px", height: "auto" }}
         />
       </Box>
       <Divider sx={{ borderColor: "#ffffff30" }} />
@@ -67,14 +72,37 @@ const NavBar = (props) => {
   return (
     <Box sx={{ display: "flex", width: "100%", maxWidth: "1680px" }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: "#22284f" }}>
+      <AppBar
+        component="nav"
+        sx={{
+          backgroundColor:
+            mode === "dark"
+              ? theme.palette.background.default
+              : theme.palette.primary.main,
+        }}
+      >
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
             <img
               src="https://noveloffice.in/wp-content/uploads/2023/08/novel-office-logo.webp"
               alt="Novel Logo"
               title="Novel Office"
-              style={{ maxWidth: '250px', height: 'auto', padding: '5px' }}
+              style={{ maxWidth: "250px", height: "auto", padding: "5px" }}
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <label
+              style={{
+                color: theme.palette.common.white,
+                marginRight: "10px",
+              }}
+            >
+              {mode === "dark" ? "Dark Mode" : "Light Mode"}
+            </label>
+            <Switch
+              checked={mode === "dark"}
+              onChange={toggleTheme}
+              color="default"
             />
           </Box>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
@@ -82,7 +110,7 @@ const NavBar = (props) => {
               <Button
                 key={item.path}
                 sx={{
-                  color: "#fff",
+                  color: theme.palette.common.white,
                   textTransform: "none",
                   fontWeight: "bold",
                 }}
@@ -119,8 +147,8 @@ const NavBar = (props) => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "#22284f",
-              color: "#fff",
+              backgroundColor: theme.palette.background.default,
+              color: theme.palette.text.primary,
             },
           }}
         >
